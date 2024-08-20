@@ -1,15 +1,18 @@
+from django.contrib.auth.decorators import permission_required, login_required
 from django.shortcuts import render
-from ATM.forms import WithdrawalForm, AccountForm
+from djgentelella.settings import User
+
+from ATM.forms import WithdrawalForm, AccountForm, AccountValidationForm
 from django.shortcuts import render, get_object_or_404, redirect
 
-from ATM.models import account, user
+from ATM.models import Account
 
 
-def index(request):
-    bank_account = account.objects.all()
-    clerk = user.objects.all()
+def inicio(request):
+    bank_account = Account.objects.all()
+    user = User.objects.all()
 
-    return render(request, 'index.html', {'bank_account': bank_account, 'clerk': clerk})
+    return render(request, 'index.html', {'bank_account': bank_account, 'user': user})
 
 
 
@@ -44,11 +47,11 @@ def generate_message(notes):
 
     for denomination, count in notes.items():
         if count > 0:
-            message_parts.append(f"{count} billete{'s' if count > 1 else ''} de {denomination:,} colones")
+            message_parts.append(f"{count} bill{'s' if count > 1 else ''} of {denomination:,} colones")
 
-    return f"Su dinero es " + ", ".join(message_parts)
+    return f"your money is " + ", ".join(message_parts)
 
-
+@login_required
 def withdraw(request):
     if request.method == 'POST':
         form = WithdrawalForm(request.POST)
@@ -61,16 +64,35 @@ def withdraw(request):
                 return render(request, 'result.html', {'notes': notes, 'message': message})
             else:
                 return render(request, 'result.html',
-                              {'error': 'La transacción falló. No se puede entregar el monto exacto.'})
+                              {'error': 'The transaction failed. The exact amount cannot be delivered.'})
     else:
         form = WithdrawalForm()
 
-    return render(request, 'withdraw.html', {'form': form})
+    return render(request, 'withdraws/withdraw.html', {'form': form})
+
+
+@login_required
+def validate_account(request):
+    if request.method == 'POST':
+        form = AccountValidationForm(request.POST, user=request.user)
+        if form.is_valid():
+            # Si la validación es exitosa, redirige a una página de éxito o realiza alguna acción
+            return redirect('withdraw   ')
+    else:
+        form = AccountValidationForm(user=request.user)
+
+    return render(request, 'withdraws/insert_pin.html', {'form': form})
+
+
+
+
+
 
 ## *** End withdraw functions ***
 
 
 # Create (Crear)
+@permission_required('ATM.can_manage_client')
 def account_create(request):
     if request.method == "POST":
         form = AccountForm(request.POST)
@@ -82,13 +104,14 @@ def account_create(request):
     return render(request, 'crud_accounts/account_form.html', {'form': form})
 
 # Read (Leer)
+@permission_required('ATM.can_manage_client')
 def account_list(request):
-    accounts = account.objects.all()
+    accounts = Account.objects.all()
     return render(request, 'crud_accounts/account_list.html', {'accounts': accounts})
 
 # Update (Actualizar)
 def account_update(request, pk):
-    acc = get_object_or_404(account, pk=pk)
+    acc = get_object_or_404(Account, pk=pk)
     if request.method == "POST":
         form = AccountForm(request.POST, instance=acc)
         if form.is_valid():
@@ -100,10 +123,10 @@ def account_update(request, pk):
 
 # Delete (Eliminar)
 def account_delete(request, pk):
-    acc = get_object_or_404(account, pk=pk)
+    acc = get_object_or_404(Account, pk=pk)
     if request.method == "POST":
         acc.delete()
         return redirect('account_list')
-    return render(request, 'crud_accounts/account_confirm_delete.html', {'account': account})
+    return render(request, 'crud_accounts/account_confirm_delete.html', {'account': Account})
 
 

@@ -1,22 +1,19 @@
 {% extends "base.html" %}
-{% load static %}
-
 
 {% block content %}
 <div class="right_col" role="main">
     <div class="row">
-        <div class="col-md-12 col-sm-12 ">
+       <div class="col-md-6 offset-md-1">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Delete Account</h2>
+                    <h2>Validar Cuenta</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <p>¿Are you sure you want to delete the account "{{ account.name }}"?</p>
                     <form method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                        <a href="{% url 'account_list' %}" class="btn btn-secondary">Cancel</a>
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-success">Validar</button>
                     </form>
                 </div>
             </div>

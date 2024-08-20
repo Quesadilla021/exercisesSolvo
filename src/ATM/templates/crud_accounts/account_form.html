@@ -4,18 +4,18 @@
 {% block content %}
 <div class="right_col" role="main">
     <div class="row">
-        <div class="col-md-12 col-sm-12 ">
+       <div class="col-md-6 offset-md-1">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>{% if form.instance.pk %}Editar Cuenta{% else %}Nueva Cuenta{% endif %}</h2>
+                    <h2>{% if form.instance.pk %}Edit Account{% else %}New Account{% endif %}</h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                     <form method="post">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                        <a href="{% url 'account_list' %}" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <a href="{% url 'account_list' %}" class="btn btn-secondary">Cancel</a>
                     </form>
                 </div>
             </div>
