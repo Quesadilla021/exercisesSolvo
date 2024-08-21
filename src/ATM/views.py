@@ -76,7 +76,15 @@ def validate_account(request):
     if request.method == 'POST':
         form = AccountValidationForm(request.POST, user=request.user)
         if form.is_valid():
-            # Si la validación es exitosa, redirige a una página de éxito o realiza alguna acción
+
+            # Obtener la cuenta validada
+            account_name = form.cleaned_data.get('account_name')
+            pin_code = form.cleaned_data.get('pin_code')
+            account = Account.objects.get(user=request.user, name=account_name, pin_code=pin_code)
+
+            # Almacenar el ID de la cuenta en la sesión
+            request.session['validated_account_id'] = account.id
+
             return redirect('withdraw')
     else:
         form = AccountValidationForm(user=request.user)
