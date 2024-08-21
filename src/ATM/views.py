@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from ATM.models import Account
 
-
+@login_required
 def inicio(request):
     bank_account = Account.objects.all()
     user = User.objects.all()
@@ -77,15 +77,11 @@ def validate_account(request):
         form = AccountValidationForm(request.POST, user=request.user)
         if form.is_valid():
             # Si la validación es exitosa, redirige a una página de éxito o realiza alguna acción
-            return redirect('withdraw   ')
+            return redirect('withdraw')
     else:
         form = AccountValidationForm(user=request.user)
 
     return render(request, 'withdraws/insert_pin.html', {'form': form})
-
-
-
-
 
 
 ## *** End withdraw functions ***

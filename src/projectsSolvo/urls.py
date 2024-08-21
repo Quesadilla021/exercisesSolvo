@@ -23,6 +23,7 @@ from djgentelella.urls import urlpatterns as urls_djgentelella
 urlpatterns = urls_djgentelella + [
     path('admin/', admin.site.urls),
     path('ATM/', include("ATM.urls")),
+    path('Holidays/', include("Holidays.urls")),
     path('', RedirectView.as_view(url=reverse_lazy('index')), name='index'),
 
 ]
