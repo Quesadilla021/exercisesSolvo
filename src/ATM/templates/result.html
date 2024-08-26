@@ -1,0 +1,17 @@
+<!-- templates/result.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+
+      <h2>Result</h2>
+      {% if error %}
+        <p>{{ error }}</p>
+      {% else %}
+        <p>{{ message }}</p>
+      {% endif %}
+      <a href="{% url 'withdraw' %}">Make another transaction</a>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="right_col" role="main">
+    <div class="row">
+       <div class="col-md-6 offset-md-1">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Validar Cuenta</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-success">Validar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

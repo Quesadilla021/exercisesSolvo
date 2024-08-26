@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container" role="main">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 ">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Account list</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <a href="{% url 'account_create' %}" class="btn btn-primary">New</a>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>PIN</th>
+                                <th>Money</th>
+                                <th>User</th>
+                                <th>Acctions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for account in accounts %}
+                            <tr>
+                                <td>{{ account.id }}</td>
+                                <td>{{ account.name }}</td>
+                                <td>{{ account.pin_code }}</td>
+                                <td>{{ account.money }}</td>
+                                <td>{{ account.user }}</td>
+
+                                <td>
+                                    <a href="{% url 'account_update' account.id %}" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="{% url 'account_delete' account.id %}" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
