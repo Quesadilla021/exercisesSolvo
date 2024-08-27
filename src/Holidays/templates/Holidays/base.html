@@ -19,15 +19,17 @@
             </div>
             {% endblock sidebar %}
 
-            <!-- Contenido principal -->
+            {% block content_block_wrap %}
             <div class="right_col" role="main">
                 {% block content %}
-                <!-- Aquí las vistas hijas insertarán su contenido -->
+
                 {% endblock %}
             </div>
+            {% endblock content_block_wrap %}
+
 
             {% block footer %}
-                <!-- Aquí va el pie de página -->
+
             {% endblock %}
 
         </div>

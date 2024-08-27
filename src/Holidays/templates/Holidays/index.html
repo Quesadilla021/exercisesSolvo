@@ -1,38 +1,30 @@
 {% extends "Holidays/base.html" %}
 {% load static %}
+{% block title %}Holidays{% endblock %}
 
 {% block content %}
+<div class="row">
+    <table class="table table-striped w-100 table-responsive" id="holidays_tabla"></table>
+</div>
+{% endblock %}
+
+{% block js %}
+{{block.super}}
+
+datatable.inits = {
+    columns: [
+                {data: "id", name: "id", title: ID, type: "string", visible: false}
+                {data: "name", name: "name", title: Name, type: "string", visible: true}
+                {data: "weekday", name: "weekday", title: Weekday, type: "string", visible: true}
+                {data: "date", name: "date", title: Date, "dateformat": document.date_format, visible: true}
+                {data: "country", name: "country", title: Country, type: "string", visible: true}
+                {data: "actions", name: "actions", title: gettext("Actions"), type: "string", visible: true}
 
 
+],
+addfilter: true
 
-    <h1>Holiday List</h1>
-
-    <!-- Formulario para los filtros -->
-    <form id="filterForm">
-        <label for="country">Country:</label>
-        <input type="text" id="country" name="country" placeholder="Enter country code (e.g., CR)">
-
-        <label for="name">Holiday Name:</label>
-        <input type="text" id="name" name="name" placeholder="Enter holiday name">
-
-        <label for="start_date">Start Date:</label>
-        <input type="date" id="start_date" name="start_date">
-
-        <label for="end_date">End Date:</label>
-        <input type="date" id="end_date" name="end_date">
-
-        <button type="submit">Search</button>
-    </form>
-
-    <!-- Contenedor para mostrar los resultados -->
-    <div id="results">
-        <!-- Aquí se cargarán los datos de los feriados -->
-    </div>
-
-
-
-
-
+}
 
 {% endblock %}
 
