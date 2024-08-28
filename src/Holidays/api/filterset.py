@@ -7,6 +7,8 @@ class HolidayFilter(FilterSet):
     class Meta:
         model = Holiday
         fields = {'id': ['exact'],
-                  'name': ['icontains']
+                  'name': ['icontains'],
+                  'weekday': ['icontains'],
+                  'country': ['icontains'],
 
                   }

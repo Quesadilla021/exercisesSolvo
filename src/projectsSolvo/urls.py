@@ -17,13 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, reverse_lazy
 from django.views.generic import RedirectView
-
 from djgentelella.urls import urlpatterns as urls_djgentelella
+from Holidays.urls import urlpatterns as urls_holidays
 
 urlpatterns = urls_djgentelella + [
     path('admin/', admin.site.urls),
     path('ATM/', include("ATM.urls")),
-    path('holidays/v1/', include("Holidays.urls")),
-    path('', RedirectView.as_view(url=reverse_lazy('index')), name='index'),
+    path('holidays/', include((urls_holidays, "holidays"), namespace='holidays')),
+    path('', RedirectView.as_view(url=reverse_lazy('Holidays:home')), name='home'),
 
 ]

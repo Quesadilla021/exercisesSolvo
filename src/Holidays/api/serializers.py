@@ -6,11 +6,11 @@ from Holidays.models import Holiday
 
 class HolidaySerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
-
+    actions = serializers.SerializerMethodField()
     def get_name(self, obj):
         return obj.name
 
-    def get_action(self):
+    def get_actions(self, obj):
         return {
             "create": True,
             "update": True,
@@ -20,10 +20,10 @@ class HolidaySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Holiday
-        fields = '__all__'
+        fields = ['name', 'actions', 'id', 'weekday', 'date', 'country', ]
 
 class HolidayDataTableSerializer(serializers.Serializer):
     data = serializers.ListField(child=HolidaySerializer(), required=True)
     draw = serializers.IntegerField(required=True)
-    recordFiltered = serializers.IntegerField(required=True)
+    recordsFiltered = serializers.IntegerField(required=True)
     recordsTotal = serializers.IntegerField(required=True)

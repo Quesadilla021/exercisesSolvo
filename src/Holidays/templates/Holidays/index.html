@@ -1,30 +1,95 @@
 {% extends "Holidays/base.html" %}
-{% load static %}
+{% load static gtsettings %}
+
+
 {% block title %}Holidays{% endblock %}
 
+{% block pre_head %}
+
+{% define_true "use_datatables" %}
+
+{% endblock %}
+
 {% block content %}
+<h1 class="text-center"Listado de feriados></h1>
 <div class="row">
     <table class="table table-striped w-100 table-responsive" id="holidays_tabla"></table>
 </div>
+
+{% url "laboratory:api-holiday-list" as list_obj_url %}
+{% include 'gentelella/blocks/modal_template.html' with form=create_form id="create_obj_modal" title="Crear Feriado" form_id="create_obj_form" url=list_obj_url %}
+
+{% url "laboratory:api-holiday-detail" 0 as detail_obj_url %}
+{% include 'gentelella/blocks/modal_template.html' with form=update_form id="update_obj_modal" title="Actualizar Feriado" form_id="update_obj_form" url=detail_obj_url %}
+
+{% include 'gentelella/blocks/modal_template.html' with form=delete_form id="delete_obj_modal" form_id="delete_obj_form" url=detail_obj_url %}
+
 {% endblock %}
 
 {% block js %}
 {{block.super}}
+<script>
+var object_urls = {
+    list_url: "{% url 'holidays:api-holiday-list' %}",
+    create_url: "{% url 'holidays:api-holiday-list' %}",
+    destroy_url: "{% url 'holidays:api-holiday-detail' 0 %}",
+    update_url: "{% url 'holidays:api-holiday-detail' 0 %}"
+}
 
-datatable.inits = {
+datatable_inits = {
     columns: [
-                {data: "id", name: "id", title: ID, type: "string", visible: false}
-                {data: "name", name: "name", title: Name, type: "string", visible: true}
-                {data: "weekday", name: "weekday", title: Weekday, type: "string", visible: true}
-                {data: "date", name: "date", title: Date, "dateformat": document.date_format, visible: true}
-                {data: "country", name: "country", title: Country, type: "string", visible: true}
-                {data: "actions", name: "actions", title: gettext("Actions"), type: "string", visible: true}
+                {data: "id", name: "id", title: "ID", type: "string", visible: false},
+                {data: "name", name: "name", title: "Name", type: "string", visible: true},
+                {data: "weekday", name: "weekday", title: "Weekday", type: "string", visible: true},
+                {data: "date", name: "date", title: "Date", type: "date", "dateformat": document.date_format, visible: true},
+                {data: "country", name: "country", title: "Country", type: "string", visible: true},
+                {data: "actions", name: "actions", title: "Actions", type: "string", visible: true}
 
 
 ],
 addfilter: true
 
 }
+
+var holiday_modalids = {
+    create: "#create_obj_modal",
+    destroy: "#delete_obj_modal",
+    update: "#update_obj_modal",
+}
+
+var holiday_actions = {
+    table_actions: [], // table_actions
+    object_actions: [],
+        title: gettext('Actions'),
+        className: "no-export-col"
+}
+
+icons = {
+    create: '<i class="fa fa-plus" aria-hidden="true"></i>',
+    clear: '<i class="fa fa-eraser" aria-hidden="true"></i>',
+    detail: 'fa fa-eye',
+    update: 'fa fa-edit me-1 fa-lg',
+    destroy: 'fa fa-trash fa-lg',
+
+}
+
+let objconfig={
+    urls: object_urls,
+    datatable_element: "#holidays_tabla",
+    modal_ids: holiday_modalids,
+    actions: holiday_actions,
+    datatable_inits: datatable_inits,
+    add_filters: true,
+    relation_render: {'field_autocomplete': 'text'},
+    delete_display: data => data['name'],
+    create: "btn-success",
+    icons: icons
+}
+
+let crud=ObjectCRUD("holidaycrudobj", objconfig)
+crud.init();
+
+</script>
 
 {% endblock %}
 

@@ -1,46 +1,19 @@
-{% extends "gentelella/base.html" %}
+{% extends 'gentelella/base.html' %}
 {% load static %}
+{% block title %} Feriados {% endblock %}
+{% block extra_css %}
+{% endblock %}
+{% block content_block_wrap %}
+  <div class="card">
+      <div class="card-body">
+   {% block content %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Banco tres patitos{% endblock %}</title>
-    <link href="{% static 'gentelella/vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'gentelella/build/css/custom.min.css' %}" rel="stylesheet">
-</head>
-<body class="nav-md">
-    <div class="container body">
-        <div class="main_container">
+    <!-- {{ content }} -->
+  {% endblock content %}
+      </div>
+  </div>
+{% endblock content_block_wrap %}
 
-            {% block sidebar %}
-            <div class="col-md-3 left_col {% block sidebar_class %} {% endblock sidebar_class %}">
-                {% include "Holidays/sidebar.html" %}
-            </div>
-            {% endblock sidebar %}
-
-            {% block content_block_wrap %}
-            <div class="right_col" role="main">
-                {% block content %}
-
-                {% endblock %}
-            </div>
-            {% endblock content_block_wrap %}
-
-
-            {% block footer %}
-
-            {% endblock %}
-
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <script src="{% static 'gentelella/vendors/jquery/dist/jquery.min.js' %}"></script>
-    <script src="{% static 'gentelella/vendors/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'gentelella/build/js/custom.min.js' %}"></script>
-
-    <script src="script.js"></script>
-
-</body>
-</html>
+{% block javascript %}
+{{block.super}}
+{% endblock %}
